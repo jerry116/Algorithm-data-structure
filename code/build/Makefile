@@ -1,6 +1,7 @@
-#wildcard把 指定目录 ./ 和 ../lib 下的所有后缀是c的文件全部展开。
-SRCS =  $(wildcard *.c ../lib/*.c)
-SRCS += $(wildcard *.c ../source/*.c)
+#wildcard把 指定目录下的所有后缀是c的文件全部展开。
+SRCS =  $(wildcard *.c ../test/*.c)
+SRCS += $(wildcard *.c ../sort/*.c)
+SRCS += $(wildcard *.c ../list/*.c)
 
 #OBJS将$(SRCS)下的.c文件转化为.o文件
 OBJS = $(SRCS:.c = .o)
@@ -12,7 +13,7 @@ INCLUDES = -I../include \
            -I. \
 
 #链接库查找地址
-LIBS = -L../lib
+LIBS = 
 
 #
 CCFLAGS = -g -Wall -O0
