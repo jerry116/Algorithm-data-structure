@@ -17,6 +17,7 @@ int main()
 	slist_test();
 	stack_test();
 	queue_test();
+	dlist_test();
 	
 	return 0;
 }

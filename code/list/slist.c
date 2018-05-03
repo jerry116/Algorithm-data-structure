@@ -17,21 +17,21 @@ struct node {
  * operations (stereotype)
  * 操作
  */
-LIST init_list(void);
-void delete_list(LIST);
+LIST init_slist(void);
+void delete_slist(LIST);
 int sl_is_null(LIST);
 void insert_node(position, int);
 void delete_node(LIST, position);
 position find_last(LIST);
 position find_value(LIST, int);
 position find_previous(LIST, position);
-void print_list(LIST);
+void print_slist(LIST);
 
 /*
  * Traverse the list and print each element
  * 打印表
  */
-void print_list(LIST L)
+void print_slist(LIST L)
 {
     position np;
     if (sl_is_null(L)) {
@@ -53,7 +53,7 @@ void print_list(LIST L)
  * head node doesn't store valid element value
  * 创建表
  */
-LIST init_list(void) 
+LIST init_slist(void) 
 {
     LIST L;
     
@@ -69,7 +69,7 @@ LIST init_list(void)
  * Delete all nodes in a list
  * 删除表
  */
-void delete_list(LIST L)
+void delete_slist(LIST L)
 {
     position np, next;
 
@@ -207,36 +207,36 @@ void slist_test()
     int a[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 
     /* initiate a list */
-    L = init_list();
-    print_list(L);
+    L = init_slist();
+    print_slist(L);
     len = sizeof(a)/sizeof(a[0]);
 
     /* insert nodes. Insert just after head node */
     for (i = len - 1; i >= 0; i--) {
         insert_node(L, a[i]);
     }
-    print_list(L);
+    print_slist(L);
 
     /* delete first node with value 5 */
     np = find_value(L, 5);
     delete_node(L, np);
-    print_list(L);
+    print_slist(L);
 
     /* delete list */
-    delete_list(L);
+    delete_slist(L);
 
     /* initiate a list */
-    L = init_list();
-    print_list(L);
+    L = init_slist();
+    print_slist(L);
 
     /* insert nodes. Insert just after head node */
     for (i = len - 1; i >= 0; i--) {
         insert_node(L, a[i]);
     }
-    print_list(L);
+    print_slist(L);
 
     /* delete list */
-    delete_list(L);
+    delete_slist(L);
     
     printf("=====================================================\r\n");
 }

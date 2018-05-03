@@ -4,240 +4,410 @@
 #include "util.h"
 #include "list.h"
 
-typedef struct node *LIST; 
+typedef int item; 
+typedef struct node *pnode; 
 typedef struct node *position;
 
 /* node，节点 */
 struct node {
-    int element;
+    item element;
+    position prev;
     position next;
 };
-#if 0
-/* 
- * operations (stereotype)
- * 操作
- */
-LIST init_list(void);
-void delete_list(LIST);
-int is_null(LIST);
-void insert_node(position, int);
-void delete_node(LIST, position);
-position find_last(LIST);
-position find_value(LIST, int);
-position find_previous(LIST, position);
-void print_list(LIST);
+
+typedef struct list {
+	pnode head;
+	pnode tail;
+	int size;
+} DLIST;
+
+/*分配值为i的节点，并返回节点地址*/
+position make_node(item i);
+
+/*释放p所指的节点*/
+void free_node(pnode p);
+
+/*构造一个空的双向链表*/
+DLIST* init_dlist();
+
+/*摧毁一个双向链表*/
+void delete_dlist(DLIST *plist);
+
+/*返回头节点地址*/
+position get_head(DLIST *plist);
+
+/*返回尾节点地址*/
+position get_tail(DLIST *plist);
+
+/*返回链表大小*/
+int get_size(DLIST *plist);
+
+/*返回p的直接后继位置*/
+position get_next(position p);
+
+/*返回p的直接前驱位置*/
+position get_previous(position p);
+
+/*打印表*/
+void print_dlist(DLIST *plist);
+
+/*判断链表是否为空表*/
+int is_empty(DLIST *plist);
+
+/*将一个链表置为空表，释放原链表节点空间*/
+void clear_list(DLIST *plist);
+
+/*将pnode所指节点插入第一个节点之前*/
+pnode insert_first(DLIST *plist, pnode node);
+
+/*将链表第一个节点删除并返回其地址*/
+pnode delete_first(DLIST *plist);
+
+/*获得节点的数据项*/
+item get_item(position p);
+
+/*设置节点的数据项*/
+void set_item(position p, item i);
+
+/*删除链表中的尾节点并返回其地址，改变链表的尾指针指向新的尾节点*/
+pnode Remove(DLIST *plist);
+
+/*在链表中p位置之前插入新节点S*/
+pnode insert_before(DLIST *plist, position p, pnode s);
+
+/*在链表中p位置之后插入新节点s*/
+pnode insert_after(DLIST *plist, position p, pnode s);
+
+/*返回在链表中第i个节点的位置*/
+pnode locate_pos(DLIST *plist, int i);
+
+/*依次对链表中每个元素调用函数visit()*/
+void list_traverse(DLIST *plist, void (*visit)());
+
+/*分配值为i的节点，并返回节点地址*/
+position make_node(item i)
+{
+	position ptemp = NULL;
+	
+	ptemp = malloc(sizeof(position));
+	if (ptemp != NULL)
+	{
+		ptemp->element = i;
+		ptemp->prev = NULL;
+		ptemp->next = NULL;
+	}
+	
+	return ptemp;
+}
+
+/*释放p所指的节点*/
+void free_node(pnode p)
+{
+	free(p);
+}
+
+/*构造一个空的双向链表*/
+DLIST* init_dlist()
+{
+	DLIST *plist;
+	pnode head;
+	
+	plist = malloc(sizeof(DLIST));
+	head  = make_node(0);
+	if (plist != NULL)
+	{
+		if (head != NULL)
+		{
+			plist->head = head;
+			plist->tail = head;
+			plist->size = 0;
+		}
+		else
+			return NULL;
+	}
+	
+	return plist;
+}
+
+/*摧毁一个双向链表*/
+void delete_dlist(DLIST *plist)
+{
+	clear_list(plist);  
+    free(get_head(plist));  
+    free(plist); 
+}
+
+/*返回头节点地址*/
+position get_head(DLIST *plist)
+{
+	if (plist == NULL)
+		return NULL;
+	
+	return plist->head;
+}
+
+/*返回尾节点地址*/
+position get_tail(DLIST *plist)
+{
+	if (plist == NULL)
+		return NULL;
+	
+	return plist->tail;
+}
+
+/*返回链表大小*/
+int get_size(DLIST *plist)
+{
+	if (plist == NULL)
+		return 0;
+	
+	return plist->size;
+}
+
+/*返回p的直接后继位置*/
+position get_next(position p)
+{
+	if (p == NULL)
+		return NULL;
+	
+	return p->next;
+}
+
+/*返回p的直接前驱位置*/
+position get_previous(position p)
+{
+	if (p == NULL)
+		return NULL;
+	
+	return p->prev;
+}
 
 /*
  * Traverse the list and print each element
  * 打印表
  */
-void print_list(LIST L)
+void print_dlist(DLIST *plist)
 {
     position np;
-    if (is_null(L)) {
+    
+    if (is_empty(plist)) {
         printf("Empty List\r\n");
         return;
     }
 
-    np = L;
+    np = plist->tail;
     while (np->next != NULL) { 
         np = np->next;
-        printf("%p: %3d \r\n", np, np->element);
+        printf("%p: %3d -->\r\n", np, np->element);
     }
     printf("\r\n");
-
 }
 
-/*
- * Initialize a linked list. This list has a head node
- * head node doesn't store valid element value
- * 创建表
- */
-LIST init_list(void) 
+void print_node(item i)
 {
-    LIST L;
-    
-    L = (position) malloc(sizeof(struct node));
-    if (L == NULL)
-    	return NULL;
-    
-    L->next = NULL;
-    return L;
+    printf("%3d\r\n", i);
 }
 
-/*
- * Delete all nodes in a list
- * 删除表
- */
-void delete_list(LIST L)
-{
-    position np, next;
+/*判断链表是否为空表*/  
+int is_empty(DLIST *plist)  
+{  
+    if ((get_size(plist) == 0) && (get_tail(plist) == get_head(plist)))
+        return 1;  
+    else  
+        return 0;  
+}
 
-	if (L == NULL)
-		return;
+/*将一个链表置为空表，释放原链表节点空间*/
+void clear_list(DLIST *plist)
+{
+	pnode temp;
+	pnode p;
 	
-    np = L;
-    do {
-        next = np->next;
-        free(np);
-        np   = next;
-    } while (next != NULL);    
+	if (plist == NULL)
+		return;
+ 
+    p = get_tail(plist);
+    while (!is_empty(plist))
+    {
+        temp = get_previous(p);
+        free_node(p);
+        p = temp;
+        plist->tail = temp;
+        plist->size--;
+    }
 }
 
-/*
- * if a list only has head node, then the list is null.
- * 判断表是否为空
- */
-int is_null(LIST L) 
+/*将pnode所指节点插入第一个节点之前*/
+pnode insert_first(DLIST *plist, pnode node)
 {
-	if (L == NULL)
+	pnode head;
+	
+	if (is_empty(plist))
+	{
+		plist->tail = node;
+	}
+	plist->size++;
+	
+	head = get_head(plist);
+	node->next = head->next;
+	node->prev = head;
+	
+	if (head->next != NULL)
+		head->next->prev = node;
+	head->next = node;
+	
+	return node;
+}
+
+/*将链表第一个节点删除并返回其地址*/
+pnode delete_first(DLIST *plist)
+{
+	position head;
+	position p;
+	
+	if (plist == NULL)
+		return NULL;
+	
+	head = get_head(plist);
+	if (head == NULL)
+		return NULL;
+	
+	p = head->next;
+	if (p != NULL)
+	{
+		head->next = p->next;
+		head->next->prev = head;
+		plist->size--;
+	}
+
+	return p;
+}
+
+/*获得节点的数据项*/
+item get_item(position p)
+{
+	if (p == NULL)
 		return 0;
 	
-    return ((L->next) == NULL);
+	return p->element;
 }
 
-/*
- * insert a node after position np
- * 在np节点之后，插入节点
- */
-void insert_node(position np, int value) 
+/*设置节点的数据项*/
+void set_item(position p, item i)
 {
-    position nodeAddr;
-    
-    nodeAddr = (position) malloc(sizeof(struct node));
-    if (nodeAddr == NULL)
-    	return;
-    
-    nodeAddr->element = value;
-    nodeAddr->next = np->next;
-    np->next = nodeAddr;    
+	if (p == NULL)
+		return;
+	
+	p->element = i;
 }
 
-/*
- * delete node at position np
- * 删除np节点
- */
-void delete_node(LIST L, position np)
+/*删除链表中的尾节点并返回其地址，改变链表的尾指针指向新的尾节点*/
+pnode Remove(DLIST *plist)
 {
-    position previous, next;
-    
-    if (L == NULL)
-    	return;
-    
-    next     = np->next;
-    previous = find_previous(L, np);
-    if (previous != NULL) {
-        previous->next = next;
-        free(np); 
-    }
-    else {
-        printf("Error: np not in the list\r\n");
-    }
+	position p = NULL;
+	
+	if (is_empty(plist))
+		return NULL;
+	else
+	{
+		p = get_tail(plist);
+		p->prev->next = p->next;
+		plist->tail = p->prev;
+		plist->size--;
+		
+		return p;
+	}
 }
 
-/*
- * find the last node of the list
- * 寻找表的最后一个节点
- */
-position find_last(LIST L)
+/*在链表中p位置之前插入新节点S*/
+pnode insert_before(DLIST *plist, position p, pnode s)
 {
-    position np;
-    
-    if (L == NULL)
-    	return NULL;
-    
-    np = L;
-    while (np->next != NULL) {
-        np = np->next;
-    }
-    return np;
+	s->prev = p->prev->next;
+	s->next = p;
+	p->prev->next = s;
+	p->prev = s;
+	
+	plist->size++;
+	
+	return s;
 }
 
-/*
- * This function serves for 2 purposes:
- * 1. find previous node 
- * 2. return NULL if the position isn't in the list
- * 寻找npTarget节点前面的节点
- */
-position find_previous(LIST L, position npTarget)
+/*在链表中p位置之后插入新节点s*/
+pnode insert_after(DLIST *plist, position p, pnode s)
 {
-    position np;
-    
-    if (L == NULL)
-    	return NULL;
-   
-    np = L;
-    while (np->next != NULL) {
-        if (np->next == npTarget)
-        	return np; 
-        np = np->next;
-    } 
-    return NULL;
+	s->prev = p;
+	s->next = p->next;
+	
+	if (p->next != NULL)
+		p->next->prev = s;
+	p->next = s;
+	
+	if (p = get_tail(plist))
+		plist->tail = s;
+		
+	plist->size++;
+	
+	return s;
 }
 
-/*
- * find the first node with specific value
- * 查询
- */
-position find_value(LIST L, int value) 
+/*返回在链表中第i个节点的位置*/
+pnode locate_pos(DLIST *plist, int i)
 {
-    position np;
-    
-    if (L == NULL)
-    	return NULL;
+	int count = 0;
+	position p;
+	
+	if ((i > get_size(plist)) || (i < 1))
+		return NULL;
+		
+	p = get_head(plist);
+	while (++count <= i)
+		p = p->next;
+		
+	return p;
+}
 
-    np = L;
-    while (np->next != NULL) {
-        np = np->next;
-        if (np->element == value)
-        	return np;
-    }
-    return NULL;
+/*依次对链表中每个元素调用函数visit()*/
+void list_traverse(DLIST *plist, void (*visit)())
+{
+	position p;
+	
+	if (is_empty(plist))
+		return;
+	else
+	{
+		p = get_head(plist);
+		while (p->next != NULL)
+		{
+			p = p->next;
+			visit(p->element);
+		}
+	}	
 }
 
 /* for testing purpose */
-void slist_test()
+void dlist_test()
 {
-    LIST L;
-    position np;
-    
-    int i;
-    int len;
-    /* elements to be put into the list */
-    int a[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-
-    /* initiate a list */
-    L = init_list();
-    print_list(L);
-    len = sizeof(a)/sizeof(a[0]);
-
-    /* insert nodes. Insert just after head node */
-    for (i = len - 1; i >= 0; i--) {
-        insert_node(L, a[i]);
-    }
-    print_list(L);
-
-    /* delete first node with value 5 */
-    np = find_value(L, 5);
-    delete_node(L, np);
-    print_list(L);
-
-    /* delete list */
-    delete_list(L);
-
-    /* initiate a list */
-    L = init_list();
-    print_list(L);
-
-    /* insert nodes. Insert just after head node */
-    for (i = len - 1; i >= 0; i--) {
-        insert_node(L, a[i]);
-    }
-    print_list(L);
-
-    /* delete list */
-    delete_list(L);
+    DLIST *plist = NULL;  
+    pnode p = NULL;  
+      
+    plist = init_dlist();  
+    p = insert_first(plist, make_node(1));  
+    insert_before(plist, p, make_node(2));  
+    insert_after(plist, p, make_node(3));  
+  
+    printf("p前驱位置的值为%d\r\n", get_item(get_previous(p)));  
+    printf("p位置的值为%d\r\n", get_item(p));  
+    printf("p后继位置的值为%d\r\n", get_item(get_next(p)));  
+      
+    printf("遍历输出各节点数据项:\r\n");  
+    list_traverse(plist, print_node);  
+    printf("除了头节点该链表共有%d个节点\r\n", get_size(plist));  
+    free_node(delete_first(plist));  
+    printf("删除第一个节点后重新遍历输出为:\r\n");  
+    list_traverse(plist, print_node);  
+    printf("除了头节点该链表共有%d个节点\r\n", get_size(plist));  
+    delete_dlist(plist);  
+    printf("链表已被销毁\r\n");  
     
     printf("=====================================================\r\n");
 }
-#endif
