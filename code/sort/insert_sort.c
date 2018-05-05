@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 /*
  * 假设在新生报到的时候，我们将新生按照身高排好队(也就是排序)。如果这时有一名学生加入，我们将该名学生加入到队尾。

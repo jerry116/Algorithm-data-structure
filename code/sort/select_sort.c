@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 /*
  * 选择排序是先找到起始数组中最小的元素，将它交换到i=0；

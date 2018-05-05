@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "util.h"
-#include "list.h"
 
 typedef int item; 
 typedef struct node *pnode; 

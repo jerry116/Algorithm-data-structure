@@ -2,6 +2,7 @@
 SRCS =  $(wildcard *.c ../test/*.c)
 SRCS += $(wildcard *.c ../sort/*.c)
 SRCS += $(wildcard *.c ../list/*.c)
+SRCS += $(wildcard *.c ../tree/*.c)
 
 #OBJS将$(SRCS)下的.c文件转化为.o文件
 OBJS = $(SRCS:.c = .o)

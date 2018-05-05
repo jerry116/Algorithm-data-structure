@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 /*
  * 希尔排序是以更大的间隔来比较和交换元素，这样，大的元素在交换的时候，可以向右移动不止一个位置，从而更快的移动乌龟元素。

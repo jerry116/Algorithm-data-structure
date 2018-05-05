@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 void max_heapify(int a[], int start, int end)
 {

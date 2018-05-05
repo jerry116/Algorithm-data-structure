@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "util.h"
-#include "list.h"
 
 /* use single-linked list to implement stack */
 typedef struct node *position;

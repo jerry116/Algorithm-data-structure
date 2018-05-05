@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 /*
  * 快速排序的基本思想是

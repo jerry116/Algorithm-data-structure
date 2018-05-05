@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "util.h"
-#include "sort.h"
 
 /* 
  * 冒泡排序时，计算机从右向左遍历数组，比较相邻的两个元素。如果两个元素的顺序是错的，那么sorry，请两位互换。

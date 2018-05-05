@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "util.h"
-#include "list.h"
 
 typedef struct node *LIST; 
 typedef struct node *position;

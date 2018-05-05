@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "util.h"
-#include "list.h"
 
 /* use single-linked list to implement queue */
 typedef struct node *position;
@@ -50,7 +47,7 @@ QUEUE init_queue(void)
     q = (QUEUE) malloc(sizeof(struct HeadNode));
     if (q == NULL)
     	return NULL;
-    	
+
     q->element = 0;
     q->next  = NULL;
     q->end   = NULL;
