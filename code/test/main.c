@@ -3,6 +3,7 @@
 #include "util.h"
 #include "sort.h"
 #include "list.h"
+#include "tree.h"
 
 int main()
 {	
@@ -18,6 +19,9 @@ int main()
 	stack_test();
 	queue_test();
 	dlist_test();
+	
+	binary_search_tree_test();
+	binary_balance_tree_test();
 	
 	return 0;
 }
