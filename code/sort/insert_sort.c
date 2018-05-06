@@ -32,6 +32,7 @@ int insert_sort_test(int a[], int ac)
 
 	print_info(a, ac);
 	
+	start = clock();
 	insert_sort(a, ac);
 	finish = clock();
 	totaltime = (double)(finish - start)/CLOCKS_PER_SEC;
