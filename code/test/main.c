@@ -22,6 +22,8 @@ int main()
 	
 	binary_search_tree_test();
 	binary_balance_tree_test();
+	splay_tree_test();
+	leftist_heap_test();
 	
 	return 0;
 }
