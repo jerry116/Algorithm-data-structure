@@ -24,7 +24,11 @@ void select_sort(int a[], int ac)
     		    min_index = j;
     		}
     	}
-    	swap(a+i, a+min_index);
+    	
+    	if (min_index != i)
+    	{
+    		swap(a+i, a+min_index);
+    	}
     }
 }
 

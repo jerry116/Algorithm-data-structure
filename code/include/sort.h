@@ -29,3 +29,5 @@ int merge_sort_test_all(void);
 void heap_sort(int a[], int ac);
 int heap_sort_test(int a[], int ac);
 int heap_sort_test_all(void);
+
+int radix_sort_test_all(void);

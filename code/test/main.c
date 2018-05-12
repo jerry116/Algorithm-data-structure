@@ -12,10 +12,12 @@ int main()
 	bubble_sort_test_all();
 	insert_sort_test_all();
 	quick_sort_test_all();
+	quick_sort1_test_all();
 	select_sort_test_all();
 	shell_sort_test_all();
 	merge_sort_test_all();
 	heap_sort_test_all();
+	radix_sort_test_all();
 
     /* list */
 	slist_test();
