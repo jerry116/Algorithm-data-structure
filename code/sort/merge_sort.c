@@ -11,7 +11,7 @@
  * 我们取两张牌中小的那张取出放在手中。两个牌堆中又是两张牌暴露在最上面，继续取小的那张放在手中…… 
  * 直到所有的牌都放入手中，那么整副牌就排好顺序了。这就是归并排序。
  */
-void merge_sort(int a[], int ac)
+void merge_sort(int a[], int temp[], int ac)
 {
     int i;
     int j;
@@ -20,65 +20,68 @@ void merge_sort(int a[], int ac)
     int *ah2;
     int ac1;
     int ac2;
-    int *pmerge;
+    
+    if (ac <= 1)
+    	return;
     
     ac1 = ac/2;
     ac2 = ac - ac1;
     ah1 = a;
     ah2 = a + ac1;
     
-    merge_sort(ah1, ac1);
-    merge_sort(ah2, ac2);
+    merge_sort(ah1, temp, ac1);
+    merge_sort(ah2, temp, ac2);
     
     /* merge */
     i = 0;
     j = 0;
-    k = 0;
-    pmerge = (int *)malloc(sizeof(int) * ac);
-    if (pmerge == NULL)
-    	return;
-    
+    k = 0;   
     while ((i < ac1) && (j < ac2))
     {
         if (ah1[i] <= ah2[j])
         {
-        	pmerge[k++] = ah1[i++];
+        	temp[k++] = ah1[i++];
         }	
        	else
        	{
-       	    pmerge[k++] = ah2[j++];
+       	    temp[k++] = ah2[j++];
         }
     }
     
     while (i < ac1)
     {
-        pmerge[k++] = ah1[i++];
+        temp[k++] = ah1[i++];
     }
     
     while (j < ac2)
     {
-        pmerge[k++] = ah2[j++];
+        temp[k++] = ah2[j++];
     }
     
     /* copy back */
     for (i = 0; i < ac; i++)
     {
-        a[i] = pmerge[i];
+        a[i] = temp[i];
     }
-    
-    free(pmerge);
 }
 
 int merge_sort_test(int a[], int ac)
 {
+	int *ptemp = NULL;
 	clock_t start,finish;
     double totaltime;
 
 	print_info(a, ac);
 	
+	ptemp = (int *)malloc(sizeof(int) * ac);
+    if (ptemp == NULL)
+    	return -1;
+    	
 	start = clock();
-	select_sort(a, ac);
+	merge_sort(a, ptemp, ac);
 	finish = clock();
+	
+	free(ptemp);
 	totaltime = (double)(finish - start)/CLOCKS_PER_SEC;
 	
 	printf("After the merge sorting\r\n");

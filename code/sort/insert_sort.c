@@ -15,14 +15,15 @@ void insert_sort(int a[], int ac)
     int i;
     int j;
     
-    for (j = 1; j <= ac-1; j++) {
-        i = j - 1;
-        while ((i >= 0) && (a[i + 1] < a[i]))
-        {
-            swap(a+i+1, a+i);
-            i--;
-        }
-    }
+	for (i = 1; i <= ac - 1; i++)
+	{
+		j = i;
+		while ((j > 0) && (a[j] < a[j - 1]))
+		{
+			swap(a+j, a+j-1);
+			j--;
+		}
+	}
 }
 
 int insert_sort_test(int a[], int ac)

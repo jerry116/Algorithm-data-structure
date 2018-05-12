@@ -21,19 +21,21 @@ void shell_sort(int a[], int ac)
     step = ac;
     while (step > 1)
     {
-     	step /= 2;
-     	do {
-     	    flag = 0;
-     	    for (i = 0; i < ac - step; i++)
-     	    {
-     	        j = i + step;
-     	        if (a[j] < a[i])
-     	        {
-     	            swap(a + i, a + j);
-     	            flag = 1;
-     	        }
-     	    }
-     	} while (flag != 0);
+    	step /= 2;
+    	for (i = 0; i <= ac - step; i += step)
+    	{
+    		flag = 0;
+    		for (j = step; j <= ac - step; j += step)
+    		{
+    			if (a[j] < a[j - step])
+    			{
+    			    swap(a+j, a+j-step);
+    			    flag = 1;
+    			}
+    		}
+    		if (flag == 0)
+    			break;
+    	}
     }
 }
 

@@ -15,32 +15,29 @@ void quick_sort(int a[], int ac)
     int j;
     int pivot;
     
-    if (ac < 2)
-    {
-        return;
-    }
-    
-    pivot = a[ac/2];
-    printf("pivot [%d] ac [%d]\r\n", pivot, ac);
-    for (i = 0, j = ac - 1; ;i++, j--)
-    {
-        while (a[i] < pivot)
-        	i++;
-
-        while (pivot < a[j])
-        	j--;
-
-        if (i >= j)
-        	break;
-        
-        printf("i [%d] j [%d]\r\n", i, j);
-        swap(a + i, a + j);
-    }
-    
-    //printf("i [%d] j [%d]\r\n", i, j);
-    //pause();
-    quick_sort(a, i);
-    quick_sort(a + i, ac - i);
+	if (ac < 2)
+		return;
+		
+	/* choose the middle element as the pivot */
+	pivot = a[ac/2];
+	
+	/* let the smaller in the left of the pivot, and the bigger in the right of the pivot */
+	for (i = 0, j = ac - 1; ; i++, j--)
+	{
+		while (a[i] < pivot)
+			i++;
+			
+		while (a[j] > pivot)
+			j--;
+			
+		if (i >= j)
+			break;
+		
+		swap(a+i, a+j);
+	}
+	
+	quick_sort(a, i);
+	quick_sort(a+i, ac-i);
 }
 
 void quick_sort1(int a[], int ac)

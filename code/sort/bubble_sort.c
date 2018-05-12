@@ -12,17 +12,20 @@ void bubble_sort(int a[], int ac)
     int i,j;
     int sign;
     
-    for (j = 0; j < ac-1; j++) {
-        sign = 0;
-        for(i = ac-1; i > j; i--) {
-            if(a[i-1] > a[i]) {
-                sign = 1;
-                swap(a+i, a+i-1);
-            }
-        }
-        if (sign == 0)
-        	break;
-    }
+	for (i = 0; i <= ac - 1; i++) 
+	{
+		sign = 0;
+		for (j = ac - 1; j > i; j--)
+		{
+			if (a[j] < a[j - 1])
+			{
+				swap(a + j, a + j - 1);
+				sign = 1;
+			}
+		}
+		if (sign == 0)
+			break;
+	}
 }
 
 int bubble_sort_test(int a[], int ac)

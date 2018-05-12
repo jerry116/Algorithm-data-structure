@@ -14,17 +14,17 @@ void select_sort(int a[], int ac)
     int j;
     int min_index;
     
-    for (i = 0; i < ac-1; i++)
+    for (i = 0; i < ac - 1; i++)
     {
         min_index = i;
-        for (j = i + 1; j <= ac - 1; j++)
-        {
-            if (a[j] < a[min_index])
-            {
-            	min_index = j;
-            }
-        }
-        swap(a + i, a + min_index);
+    	for (j = i + 1; j <= ac - 1; j++)
+    	{
+    		if (a[j] < a[min_index])
+    		{
+    		    min_index = j;
+    		}
+    	}
+    	swap(a+i, a+min_index);
     }
 }
 

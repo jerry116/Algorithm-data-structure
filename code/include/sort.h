@@ -22,7 +22,7 @@ void shell_sort(int a[], int ac);
 int shell_sort_test(int a[], int ac);
 int shell_sort_test_all(void);
 
-void merge_sort(int a[], int ac);
+void merge_sort(int a[], int temp[], int ac);
 int merge_sort_test(int a[], int ac);
 int merge_sort_test_all(void);
 
