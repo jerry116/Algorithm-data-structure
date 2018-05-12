@@ -10,6 +10,10 @@ void quick_sort(int a[], int ac);
 int quick_sort_test(int a[], int ac);
 int quick_sort_test_all(void);
 
+void quick_sort1(int a[], int ac);
+int quick_sort1_test(int a[], int ac);
+int quick_sort1_test_all(void);
+
 void select_sort(int a[], int ac);
 int select_sort_test(int a[], int ac);
 int select_sort_test_all(void);
